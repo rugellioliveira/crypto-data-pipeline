@@ -1,0 +1,10 @@
+# Ignora ambiente virtual
+venv/
+
+# Cache Python
+.pytest_cache/
+__pycache__/
+*.pyc
+
+# Variáveis de ambiente
+.env
