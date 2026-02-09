@@ -1,5 +1,5 @@
 # Usa imagem oficial Python
-FROM python:3.11
+FROM python:3.11-slim
 
 # Define diretório de trabalho
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Instala bibliotecas Python
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copia código da API
 COPY api/ .
