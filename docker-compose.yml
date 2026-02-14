@@ -1,24 +1,57 @@
+version: "3.9"
+
 services:
 
   db:
     image: postgres:15-alpine
+    container_name: postgres-db
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: crypto
     ports:
       - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
 
   etl:
     build: ./etl
+    container_name: etl-pipeline
     depends_on:
       - db
+    restart: unless-stopped
 
   api:
     build:
       context: .
       dockerfile: api/Dockerfile
+    container_name: api-service
     ports:
       - "8000:8000"
     depends_on:
       - db
+    restart: unless-stopped
+
+  metabase:
+    image: metabase/metabase:latest
+    container_name: metabase
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: crypto
+      MB_DB_PORT: 5432
+      MB_DB_USER: user
+      MB_DB_PASS: password
+      MB_DB_HOST: db
+      JAVA_OPTS: "-Xms256m -Xmx768m"
+    volumes:
+      - metabase-data:/metabase-data
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  metabase-data:

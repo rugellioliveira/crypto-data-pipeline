@@ -10,5 +10,8 @@ COPY . .
 # Instala bibliotecas
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Executa o script principal
-CMD ["python", "main.py"]
+# Dá permissão para o script (mesmo no Windows, o Docker vai aplicar dentro do container Linux)
+RUN ["chmod", "+x", "./wait-for-db.sh"]
+
+# Executa o script de espera e depois o main.py
+CMD ["./wait-for-db.sh", "python", "main.py"]

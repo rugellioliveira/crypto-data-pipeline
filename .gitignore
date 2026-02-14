@@ -6,5 +6,9 @@ venv/
 __pycache__/
 *.pyc
 
+# Docker volumes ou dados persistentes
+postgres-data/
+metabase-data/
+
 # Variáveis de ambiente
 .env
